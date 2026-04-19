@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PythonWizard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,600&family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="intro-screen" class="screen active" aria-label="Main menu">
+      <div class="intro-inner">
+        <h1 class="title">PythonWizard</h1>
+        <p class="subtitle">learn python through an adventure</p>
+        <div class="menu-divider"></div>
+        <div class="menu-buttons">
+          <button type="button" class="btn btn-play" id="btn-play">Play</button>
+          <button type="button" class="btn btn-char" id="btn-char">
+            Select Character
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="story-screen" class="screen" hidden aria-label="Story intro">
+      <div class="story-inner">
+        <p class="story-line story-line--dim">[ SYSTEM ALERT ]</p>
+        <p class="story-line story-line--gap">You have been pulled inside a game.</p>
+        <p class="story-line">You are <strong id="story-char-name">Mario</strong>.</p>
+        <p class="story-line story-line--gap">A dark sorcerer — the <strong>Final Boss</strong> — has<br>trapped you here and erased every exit.</p>
+        <p class="story-line">There is only one way out:</p>
+        <p class="story-line story-line--accent">master Python.</p>
+        <p class="story-line story-line--gap">Collect knowledge, defeat his minions,<br>and write enough code to break his spell.</p>
+        <p class="story-line story-line--dim story-line--gap">The adventure begins now.</p>
+        <p class="story-prompt">press <kbd>Enter</kbd> or <kbd>Space</kbd> to continue</p>
+      </div>
+    </div>
+
+    <div id="char-screen" class="screen" hidden>
+      <div class="char-panel">
+        <h2 class="char-title">Select Character</h2>
+        <p class="char-hint">Choose your plumber (cosmetic for now)</p>
+        <div class="char-options">
+          <button type="button" class="char-card" data-char="mario">
+            <span class="char-swatch" style="--c: #e52521"></span> Mario
+          </button>
+          <button type="button" class="char-card" data-char="luigi">
+            <span class="char-swatch" style="--c: #4caf50"></span> Luigi
+          </button>
+        </div>
+        <button type="button" class="btn btn-char" id="char-back">Back</button>
+      </div>
+    </div>
+
+    <div id="game-screen" class="screen" hidden>
+      <div class="game-viewport">
+        <div class="game-shell" data-world="1">
+          <canvas id="game-canvas" width="512" height="384" aria-label="Game"></canvas>
+          <div class="hud-overlay">
+            <div class="hud-overlay__grid">
+              <div class="hud-overlay__cell hud-overlay__cell--left">
+                <span class="hud-overlay__name" id="hud-ovl-name">MARIO</span>
+                <span class="hud-overlay__score" id="hud-ovl-score">000000</span>
+                <span class="hud-overlay__lives" id="hud-ovl-lives">× 3</span>
+              </div>
+              <div class="hud-overlay__cell hud-overlay__cell--center">
+                <span class="hud-overlay__label">WORLD</span>
+                <span class="hud-overlay__world" id="hud-ovl-world">1-1</span>
+                <span class="hud-overlay__label hud-overlay__label--coins">COINS</span>
+                <span class="hud-overlay__coins" id="hud-ovl-coins">0</span>
+              </div>
+              <div class="hud-overlay__cell hud-overlay__cell--right">
+                <span class="hud-overlay__label">TIME</span>
+                <span class="hud-overlay__time" id="hud-ovl-time">400</span>
+              </div>
+            </div>
+          </div>
+          <div id="game-modal" class="game-modal" hidden>
+            <div class="game-modal__backdrop"></div>
+            <div class="game-modal__panel">
+              <h2 id="modal-title" class="game-modal__title">Course clear</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="game-help">
+        3 areas (1-1 overworld, 1-2 underground, 1-3 athletic) · ← → move · Space jump · Pits cost a life
+      </p>
+      <button type="button" class="btn btn-char" id="btn-quit">Quit to menu</button>
+    </div>
+
+    <script src="game.js"></script>
+  </body>
+</html>
