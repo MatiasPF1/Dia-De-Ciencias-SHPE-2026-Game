@@ -1,0 +1,76 @@
+/* ── Story screen ───────────────────────────────────────── */
+
+/* All story lines start invisible; JS adds --visible to reveal them */
+.story-line,
+.story-prompt {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.story-line--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#story-screen {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  padding: 2rem;
+}
+
+.story-inner {
+  max-width: 36rem;
+  text-align: center;
+}
+
+.story-line {
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.7;
+  color: #e8e8e8;
+  margin: 0 0 0.25rem;
+}
+
+.story-line strong {
+  color: #ffdd00;
+  font-weight: 700;
+}
+
+.story-line--gap {
+  margin-bottom: 2rem;
+}
+
+.story-line--dim {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+}
+
+@keyframes story-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.25; }
+}
+
+.story-prompt {
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 2.5rem;
+}
+
+.story-prompt.story-line--visible {
+  animation: story-blink 1.6s ease-in-out infinite;
+}
+
+.story-prompt kbd {
+  font-family: inherit;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  padding: 0.1em 0.4em;
+  font-size: 0.85em;
+}

@@ -10,7 +10,12 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,600&family=Press+Start+2P&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/story.css" />
+    <link rel="stylesheet" href="css/intro.css" />
+    <link rel="stylesheet" href="css/char.css" />
+    <link rel="stylesheet" href="css/game.css" />
+    <link rel="stylesheet" href="css/dialog.css" />
   </head>
   <body>
     <div id="intro-screen" class="screen active" aria-label="Main menu">
@@ -29,15 +34,13 @@
 
     <div id="story-screen" class="screen" hidden aria-label="Story intro">
       <div class="story-inner">
-        <p class="story-line story-line--dim">[ SYSTEM ALERT ]</p>
-        <p class="story-line story-line--gap">You have been pulled inside a game.</p>
-        <p class="story-line">You are <strong id="story-char-name">Mario</strong>.</p>
-        <p class="story-line story-line--gap">A dark sorcerer — the <strong>Final Boss</strong> — has<br>trapped you here and erased every exit.</p>
-        <p class="story-line">There is only one way out:</p>
-        <p class="story-line story-line--accent">master Python.</p>
-        <p class="story-line story-line--gap">Collect knowledge, defeat his minions,<br>and write enough code to break his spell.</p>
-        <p class="story-line story-line--dim story-line--gap">The adventure begins now.</p>
-        <p class="story-prompt">press <kbd>Enter</kbd> or <kbd>Space</kbd> to continue</p>
+        <p class="story-line story-line--gap">You are <strong id="story-char-name">Mario</strong>.</p>
+        <p class="story-line story-line--gap">The Princess has been taken.</p>
+        <p class="story-line story-line--gap">A magical gate blocks the way forward.<br>Only those who have learned Python may pass.</p>
+        <p class="story-line story-line--gap">Four Wizards are scattered across this world.<br>Each one will teach you something — and give you a Gem.</p>
+        <p class="story-line story-line--gap">Collect all 4 Gems to open the gate.</p>
+        <p class="story-line story-line--dim">Walk up to a Wizard and press E to talk.</p>
+        <p class="story-prompt">press Enter or Space to begin</p>
       </div>
     </div>
 
@@ -77,6 +80,8 @@
               <div class="hud-overlay__cell hud-overlay__cell--right">
                 <span class="hud-overlay__label">TIME</span>
                 <span class="hud-overlay__time" id="hud-ovl-time">400</span>
+                <span class="hud-overlay__label hud-overlay__label--gems">GEMS</span>
+                <span class="hud-overlay__gems" id="hud-ovl-gems">◆ 0 / 4</span>
               </div>
             </div>
           </div>
@@ -94,6 +99,56 @@
       <button type="button" class="btn btn-char" id="btn-quit">Quit to menu</button>
     </div>
 
-    <script src="game.js"></script>
+    <!-- NPC dialog overlay -->
+    <div id="npc-dialog" class="npc-dialog" hidden aria-modal="true" role="dialog">
+      <div class="npc-dialog__panel">
+
+        <!-- Shared header -->
+        <div class="npc-dialog__header">
+          <span class="npc-dialog__avatar" id="dlg-avatar"></span>
+          <span class="npc-dialog__npcname" id="dlg-npcname"></span>
+          <span class="npc-dialog__topic" id="dlg-topic"></span>
+        </div>
+
+        <!-- Phase 1: Intro -->
+        <div class="dlg-phase" id="dlg-phase-1">
+          <p class="npc-dialog__typetext" id="dlg-intro-text"></p>
+          <button type="button" class="dlg-btn dlg-btn--next" id="dlg-next-1">Skip ▶</button>
+        </div>
+
+        <!-- Phase 2: Teach -->
+        <div class="dlg-phase" id="dlg-phase-2" hidden>
+          <p class="npc-dialog__typetext" id="dlg-teach-text"></p>
+          <div class="npc-dialog__code-block" id="dlg-code-block" hidden>
+            <span class="npc-dialog__code-label">Example:</span>
+            <pre class="npc-dialog__code" id="dlg-code"></pre>
+          </div>
+          <div class="npc-dialog__output-block" id="dlg-output-block" hidden>
+            <span class="npc-dialog__code-label">Output:</span>
+            <pre class="npc-dialog__output" id="dlg-output"></pre>
+          </div>
+          <button type="button" class="dlg-btn dlg-btn--next" id="dlg-next-2">Skip ▶</button>
+        </div>
+
+        <!-- Phase 3: Challenge -->
+        <div class="dlg-phase" id="dlg-phase-3" hidden>
+          <p class="npc-dialog__challenge-counter" id="dlg-challenge-counter" hidden></p>
+          <p class="npc-dialog__question" id="dlg-question"></p>
+          <p class="npc-dialog__indent-note" id="dlg-indent-note" hidden></p>
+          <textarea class="npc-dialog__input" id="dlg-input" rows="3"
+                    autocomplete="off" autocorrect="off" spellcheck="false"
+                    placeholder="Type your answer here… (Ctrl+Enter to submit)"></textarea>
+          <div class="npc-dialog__actions">
+            <button type="button" class="dlg-btn dlg-btn--hint" id="dlg-hint-btn">💡 Hint</button>
+            <button type="button" class="dlg-btn dlg-btn--submit" id="dlg-submit-btn">Submit ▶</button>
+          </div>
+          <p class="npc-dialog__hint" id="dlg-hint" hidden></p>
+          <p class="npc-dialog__feedback" id="dlg-feedback"></p>
+        </div>
+
+      </div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
   </body>
 </html>

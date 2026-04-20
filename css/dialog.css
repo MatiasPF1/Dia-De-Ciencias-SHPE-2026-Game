@@ -1,0 +1,332 @@
+/* -- NPC Dialog Overlay ------------------------------------------------ */
+.npc-dialog {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 200;
+}
+
+.npc-dialog[hidden] {
+  display: none;
+}
+
+.npc-dialog__panel {
+  background: #1c1c1e;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 26px 28px 24px;
+  max-width: 480px;
+  width: calc(100% - 32px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Header */
+.npc-dialog__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+/* Colored dot avatar */
+.npc-dialog__avatar {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--npc-color, #888);
+}
+
+.npc-dialog__npcname {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--npc-color, #ddd);
+}
+
+.npc-dialog__topic {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 12px;
+  color: #666;
+  margin-left: 2px;
+}
+
+/* Intro text */
+.npc-dialog__intro {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  color: #c0c0c0;
+  line-height: 1.8;
+  white-space: pre-line;
+  margin: 0;
+}
+
+/* Code block */
+.npc-dialog__code-block {
+  background: #111;
+  border: 1px solid #2a2a2a;
+  border-radius: 5px;
+  padding: 10px 12px 10px;
+}
+
+.npc-dialog__code-label {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 10px;
+  color: #555;
+  display: block;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.npc-dialog__code {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 14px;
+  color: #7dd3fc;
+  white-space: pre;
+  margin: 0;
+  line-height: 1.7;
+}
+
+/* Question */
+.npc-dialog__question {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  color: #e0e0e0;
+  line-height: 1.8;
+  white-space: pre-line;
+  margin: 0;
+  border-left: 3px solid #444;
+  padding-left: 14px;
+}
+
+/* Text input */
+.npc-dialog__input {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 14px;
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 5px;
+  color: #f0f0f0;
+  padding: 10px 12px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+  resize: vertical;
+  min-height: 44px;
+  line-height: 1.6;
+}
+
+.npc-dialog__input:focus {
+  border-color: #666;
+}
+
+/* Actions row */
+.npc-dialog__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dlg-btn--hint {
+  background: none;
+  border: none;
+  color: #666;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  flex-shrink: 0;
+}
+
+.dlg-btn--hint:hover {
+  color: #aaa;
+}
+
+.dlg-btn--submit {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  background: #2a2a2a;
+  color: #f0f0f0;
+  border: 1px solid #444;
+  border-radius: 5px;
+  padding: 8px 18px;
+  cursor: pointer;
+  flex: 1;
+  transition: background 0.12s;
+}
+
+.dlg-btn--submit:hover {
+  background: #3a3a3a;
+}
+
+.dlg-btn--submit:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* Hint text */
+.npc-dialog__hint {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 12px;
+  color: #999;
+  background: #161616;
+  border: 1px solid #2a2a2a;
+  border-radius: 5px;
+  padding: 8px 10px;
+  white-space: pre-line;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.npc-dialog__hint[hidden] {
+  display: none;
+}
+
+/* Bowser challenge counter badge */
+.npc-dialog__challenge-counter {
+  font-family: "Press Start 2P", monospace;
+  font-size: 9px;
+  color: #ff6622;
+  background: #2a0a00;
+  border: 1px solid #883300;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin: 0 0 8px;
+  text-align: center;
+}
+.npc-dialog__challenge-counter[hidden] {
+  display: none;
+}
+
+/* Indentation reminder — always visible for if/else & functions */
+.npc-dialog__indent-note {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 11px;
+  color: #ffe580;
+  background: #2a2200;
+  border: 1px solid #6a5500;
+  border-left: 3px solid #ffbb00;
+  border-radius: 4px;
+  padding: 6px 10px;
+  margin: 0 0 4px;
+  line-height: 1.5;
+}
+.npc-dialog__indent-note[hidden] {
+  display: none;
+}
+
+/* Feedback */
+.npc-dialog__feedback {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 12px;
+  min-height: 16px;
+  line-height: 1.5;
+  margin: 0;
+  color: transparent;
+}
+
+.npc-dialog__feedback--correct {
+  color: #4cffaa;
+}
+
+.npc-dialog__feedback--wrong {
+  color: #f87171;
+}
+
+/* ── Phase layout ────────────────────────────────────────────────────────── */
+.dlg-phase {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dlg-phase[hidden] {
+  display: none;
+}
+
+/* ── Typewriter text ─────────────────────────────────────────────────────── */
+.npc-dialog__typetext {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  color: #c8c8c8;
+  line-height: 1.85;
+  white-space: pre-line;
+  margin: 0;
+  min-height: 1.85em;
+}
+
+/* Blinking cursor while typing */
+.npc-dialog__typetext.typing::after {
+  content: "▌";
+  display: inline;
+  color: var(--npc-color, #888);
+  animation: blink-cursor 0.7s step-start infinite;
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ── Next / Continue button ──────────────────────────────────────────────── */
+.dlg-btn--next {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 12px;
+  color: #888;
+  background: none;
+  border: 1px solid #333;
+  border-radius: 4px;
+  padding: 6px 14px;
+  cursor: pointer;
+  align-self: flex-end;
+  transition: color 0.12s, border-color 0.12s;
+}
+
+.dlg-btn--next:hover {
+  color: #ccc;
+  border-color: #555;
+}
+
+.dlg-btn--next:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* ── Output block ────────────────────────────────────────────────────────── */
+.npc-dialog__output-block {
+  background: #0d1a0d;
+  border: 1px solid #1e3a1e;
+  border-radius: 5px;
+  padding: 10px 12px;
+}
+
+.npc-dialog__output {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 14px;
+  color: #4cffaa;
+  white-space: pre;
+  margin: 0;
+  line-height: 1.7;
+}
+
+/* ── Reveal animation (code / output blocks) ─────────────────────────────── */
+@keyframes dlg-fade-in {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.dlg-reveal {
+  animation: dlg-fade-in 0.35s ease forwards;
+}

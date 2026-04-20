@@ -1,0 +1,197 @@
+@keyframes torch-flicker {
+  0%,100% { opacity: 1; transform: scaleY(1); }
+  25%      { opacity: .88; transform: scaleY(.95); }
+  50%      { opacity: .96; transform: scaleY(1.03); }
+  75%      { opacity: .82; transform: scaleY(.97); }
+}
+
+@keyframes float-title {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
+
+#intro-screen {
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  overflow: hidden;
+  background: #78b4e8;
+}
+
+/* Sky gradient + pixel cloud blobs */
+#intro-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80px 28px at 18% 22%, rgba(255,255,255,.85) 50%, transparent 51%),
+    radial-gradient(ellipse 50px 20px at 23% 18%, rgba(255,255,255,.85) 50%, transparent 51%),
+    radial-gradient(ellipse 90px 26px at 70% 15%, rgba(255,255,255,.85) 50%, transparent 51%),
+    radial-gradient(ellipse 55px 20px at 76% 11%, rgba(255,255,255,.85) 50%, transparent 51%),
+    radial-gradient(ellipse 60px 22px at 44% 30%, rgba(255,255,255,.7)  50%, transparent 51%),
+    linear-gradient(to bottom, #5a9fd4 0%, #78b4e8 40%, #8ecae6 100%);
+  pointer-events: none;
+}
+
+/* Bright Minecraft grass strip at bottom */
+#intro-screen::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 44px;
+  background: linear-gradient(#5ab92e 0 10px, #7d4e1e 10px 100%);
+  pointer-events: none;
+}
+
+/* Sunlight glow top-center */
+.intro-inner::before {
+  content: "";
+  position: absolute;
+  width: 340px;
+  height: 180px;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255,230,100,.22) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Torch glow right side */
+.intro-inner::after {
+  content: "";
+  position: absolute;
+  width: 140px;
+  height: 200px;
+  right: -60px;
+  bottom: 20px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255,160,30,.22) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: torch-flicker 2s ease-in-out infinite;
+}
+
+.intro-inner {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 42rem;
+  padding: 2.5rem 3rem 2.8rem;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,.04) 0px, rgba(255,255,255,.04) 1px,
+      transparent 1px, transparent 8px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255,255,255,.02) 0px, rgba(255,255,255,.02) 1px,
+      transparent 1px, transparent 8px
+    ),
+    linear-gradient(160deg, #3a3c2e 0%, #2a2d20 100%);
+  border: 3px solid #4a4a36;
+  border-top-color: #7a7a5a;
+  border-left-color: #6a6a4a;
+  border-bottom-color: #1e1e14;
+  border-right-color: #1e1e14;
+  box-shadow:
+    0 0 0 1px #111,
+    0 10px 48px rgba(0,0,0,.45),
+    inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.title {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  line-height: 1.3;
+  color: #ffe44d;
+  text-shadow:
+    3px 3px 0 #5a3a00,
+    -1px -1px 0 #5a3a00,
+     1px -1px 0 #5a3a00,
+    -1px  1px 0 #5a3a00,
+     0 0 24px rgba(255,220,50,.55);
+  letter-spacing: 0.02em;
+  animation: float-title 3.5s ease-in-out infinite;
+}
+
+.title::before,
+.title::after {
+  content: "";
+  display: none;
+}
+
+.subtitle {
+  margin: 0 0 0.5rem;
+  font-size: 0.5rem;
+  line-height: 1.8;
+  color: #a8c890;
+  text-transform: lowercase;
+  opacity: 0.95;
+  letter-spacing: 0.06em;
+}
+
+.menu-divider {
+  width: 70%;
+  height: 2px;
+  margin: 0.75rem auto 1.75rem;
+  background: linear-gradient(90deg, transparent, #5a6a3a, #8a9a50, #5a6a3a, transparent);
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.btn {
+  font-family: inherit;
+  font-size: 0.55rem;
+  padding: 0.9rem 1.6rem;
+  min-width: 16rem;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  text-align: center;
+  image-rendering: pixelated;
+}
+
+.btn-play {
+  background: #4a9c2a;
+  border-top: 4px solid #80d050;
+  border-left: 4px solid #6abf3a;
+  border-bottom: 4px solid #1e5a08;
+  border-right: 4px solid #1e5a08;
+  color: #e8ffe0;
+  text-shadow: 1px 1px 0 #0a2a00;
+  letter-spacing: 0.06em;
+}
+.btn-play:hover { background: #5ab830; }
+.btn-play:active {
+  border-top: 4px solid #1e5a08;
+  border-left: 4px solid #1e5a08;
+  border-bottom: 4px solid #80d050;
+  border-right: 4px solid #80d050;
+}
+
+.btn-char {
+  background: #6a6040;
+  border-top: 4px solid #aaa070;
+  border-left: 4px solid #908858;
+  border-bottom: 4px solid #2a2818;
+  border-right: 4px solid #2a2818;
+  color: #f0e8c8;
+  text-shadow: 1px 1px 0 #000;
+}
+.btn-char:hover { background: #7a7050; }
+.btn-char:active {
+  border-top: 4px solid #2a2818;
+  border-left: 4px solid #2a2818;
+  border-bottom: 4px solid #aaa070;
+  border-right: 4px solid #aaa070;
+}
