@@ -20,6 +20,8 @@ export const state = {
   gameWin: false,
   paused: false,
   camX: 0,
+  toastMessage: "",
+  toastUntil: 0,
 
   /** @type {{x:number,y:number,vy:number,life:number}[]} */
   coinParticles: [],
@@ -69,5 +71,6 @@ export const state = {
     jumpBuf: 0,
     invuln: 0,
     anim: 0,
+    health: 3,
   },
 };

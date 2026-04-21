@@ -1,6 +1,6 @@
 import { TILE, LEVEL_W, LEVEL_H, VIEW_W, FLAG_COL } from "./constants.js";
 import { state } from "./state.js";
-import { palette, isSolid, tileCoords, overlapsSolid, respawn, advanceAfterClear } from "./level.js";
+import { palette, isSolid, tileCoords, overlapsSolid, advanceAfterClear, applyPlayerDamage } from "./level.js";
 import { GATE_COL } from "./npcs.js";
 
 export function updateCamera() {
@@ -126,8 +126,8 @@ export function updatePlayer() {
   state.player.y = ny;
 
   if (state.player.y > LEVEL_H + 64) {
-    state.player.invuln = 60;
-    respawn();
+    applyPlayerDamage();
+    return;
   }
 
   if (state.player.onGround && (state.keys.left || state.keys.right)) state.player.anim++;

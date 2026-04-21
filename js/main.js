@@ -32,7 +32,7 @@ function tick() {
       openDialog(state.activeNpc);
     }
     if (state.activeBowser && !state.bowserDialogDone &&
-        document.getElementById("npc-dialog")?.hidden !== false) {
+      document.getElementById("npc-dialog")?.hidden !== false) {
       openBowserDialog();
     }
   }
@@ -98,7 +98,7 @@ function initDom() {
   if (state.ctx) state.ctx.imageSmoothingEnabled = false;
 
   function loadPlayerArt() {
-    const paths = ["assets/mario-character.png", "assets/mario-sheet.png"];
+    const paths = ["assets/student-character.png", "assets/mario-character.png", "assets/mario-sheet.png"];
     function attempt(i) {
       if (i >= paths.length) {
         state.playerSheet = null;
@@ -118,7 +118,7 @@ function initDom() {
 
   document.getElementById("btn-play")?.addEventListener("click", () => {
     const nameEl = document.getElementById("story-char-name");
-    if (nameEl) nameEl.textContent = state.selectedChar === "luigi" ? "Luigi" : "Mario";
+    if (nameEl) nameEl.textContent = state.selectedChar === "luigi" ? "Sam" : "Alex";
     showScreen("story-screen");
     runStoryReveal(() => {
       // Only register start controls after all lines have appeared
@@ -126,6 +126,7 @@ function initDom() {
         showScreen("game-screen");
         fullReset();
         state.paused = false;
+        document.getElementById("bg-music")?.play().catch(() => { });
         document.removeEventListener("keydown", onStoryKey);
         document.getElementById("story-screen")?.removeEventListener("click", startGame);
       }
@@ -155,6 +156,13 @@ function initDom() {
 
   document.getElementById("btn-quit")?.addEventListener("click", () => {
     state.paused = true;
+    document.getElementById("bg-music")?.pause();
+    document.getElementById("intense-music")?.pause();
+    showScreen("intro-screen");
+  });
+
+  document.getElementById("btn-victory-back")?.addEventListener("click", () => {
+    fullReset();
     showScreen("intro-screen");
   });
 

@@ -23,3 +23,55 @@ body {
 .screen.active {
   display: flex;
 }
+
+/* Victory Screen */
+.victory-inner {
+  margin: auto;
+  text-align: center;
+  color: #ffffff;
+  max-width: 600px;
+  padding: 2rem;
+}
+
+.victory-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #4caf50;
+  text-shadow: 2px 2px 0px #000000;
+}
+
+.victory-message {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  font-family: "DM Sans", sans-serif;
+}
+
+.victory-stats {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+}
+
+.victory-stats p {
+  margin: 0.5rem 0;
+  font-family: "DM Sans", sans-serif;
+}
+
+.btn-victory {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-family: "Press Start 2P", monospace;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.btn-victory:hover {
+  background: #45a049;
+}

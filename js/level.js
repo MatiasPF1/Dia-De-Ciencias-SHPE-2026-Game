@@ -1,6 +1,20 @@
 import { ROWS, COLS, GROUND_ROW, TILE, T, FLAG_COL, SPAWN_X, THEMES, LEVEL_W, VIEW_W } from "./constants.js";
 import { state } from "./state.js";
-import { syncGameShellTheme } from "./ui.js";
+import { showScreen, syncGameShellTheme } from "./ui.js";
+
+const DEATH_MESSAGES = [
+  "Put the fries in the bag.",
+  "Application rejected.",
+  "Should've learned Python.",
+  "Back to Indeed.",
+  "No experience required... except 5 years.",
+  "Resume needs more experience.",
+  "Ghosted after interview.",
+];
+
+function randomFrom(list) {
+  return list[Math.floor(Math.random() * list.length)];
+}
 
 export function palette() {
   return THEMES[state.worldIndex];
@@ -119,14 +133,14 @@ export function buildWorld1_1() {
   }
   if (G - 9 >= 0) m[G - 9][FLAG_COL] = T.FLAG_TOP;
 
-  // Castle wall after the flag
+  // Office tower wall after the checkpoint pole
   for (let k = 0; k < 6; k++) {
     const c = FLAG_COL + 3 + k;
     if (c < COLS) {
       for (let r = G - 5; r <= G; r++) m[r][c] = T.BLOCK;
     }
   }
-  // battlements on top of castle
+  // rooftop detail on office tower
   for (let k = 0; k < 3; k++) {
     const c = FLAG_COL + 3 + k * 2;
     if (c < COLS) m[G - 6][c] = T.BLOCK;
@@ -165,6 +179,7 @@ export function loadLevel() {
   state.player.vx = 0;
   state.player.vy = 0;
   state.player.invuln = 0;
+  state.player.health = 3;
   // Spawn goombas at fixed column positions (on ground)
   const gY = GROUND_ROW * TILE - 16;
   state.goombas = [
@@ -202,6 +217,9 @@ export function fullReset() {
   state.gameOver = false;
   state.levelDone = false;
   state.gameWin = false;
+  state.paused = false;
+  state.toastMessage = "";
+  state.toastUntil = 0;
   loadLevel();
   syncGameShellTheme();
 }
@@ -216,6 +234,40 @@ export function advanceAfterClear() {
     state.levelDone = false;
     setTimeout(() => { fullReset(); }, 2000);
   }
+}
+
+export function applyPlayerDamage() {
+  if (state.gameOver || state.gameWin || state.levelDone) return;
+  if (state.player.invuln > 0) return;
+
+  state.player.health -= 1;
+
+  if (state.player.health > 0) {
+    state.player.invuln = 90;
+    return;
+  }
+
+  // Health <= 0, lose a life
+  const msg = randomFrom(DEATH_MESSAGES);
+  state.lives = Math.max(0, state.lives - 1);
+  state.player.health = 3; // Reset health
+
+  if (state.lives <= 0) {
+    state.gameOver = true;
+    state.paused = true;
+    state.toastMessage = msg;
+    state.toastUntil = Date.now() + 2600;
+    setTimeout(() => {
+      showScreen("intro-screen");
+      fullReset();
+    }, 2600);
+    return;
+  }
+
+  state.player.invuln = 90;
+  state.toastMessage = msg;
+  state.toastUntil = Date.now() + 1400;
+  respawn();
 }
 
 export function respawn() {

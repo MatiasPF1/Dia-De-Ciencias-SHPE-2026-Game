@@ -1,53 +1,65 @@
 import { TILE, GROUND_ROW, VIEW_W } from "./constants.js";
 import { state } from "./state.js";
 import { showScreen } from "./ui.js";
-import { fullReset } from "./level.js";
+import { fullReset, applyPlayerDamage } from "./level.js";
 
 // ── Constants ─────────────────────────────────────────────────────────────
 export const BOWSER_TRIGGER_COL = 338;
-export const BOWSER_SPAWN_COL   = 350;
+export const BOWSER_SPAWN_COL = 350;
 export const BOWSER_W = 32;
 export const BOWSER_H = 32;
 
 // ── Challenge data ────────────────────────────────────────────────────────
 export const BOWSER_EVENT = {
-  name: "Bowser",
+  name: "Interviewer Boss",
   color: "#ff4400",
-  topic: "Final Boss",
+  topic: "Final Interview",
   intro:
-    "MWAHAHA! You dare enter MY castle?!\n" +
-    "I am Bowser, King of Koopas!\n" +
-    "Prove your Python powers or be CRUSHED!\n" +
-    "Show me what you have learned!",
+    "So, you made it to HQ.\n" +
+    "I am the Hiring Manager.\n" +
+    "Pass this final interview or get auto-rejected.\n" +
+    "Show me what you learned!",
   challenges: [
     {
       id: "bowser-0",
       question:
-        'Challenge 1: Announce yourself!\n' +
+        'Challenge 1: Introduce yourself!\n' +
         'Write two print() statements:\n' +
         '  Line 1 → print "I am ready!"\n' +
-        '  Line 2 → print "Let\'s fight!"',
-      answer: 'print("I am ready!")\nprint("Let\'s fight!")',
+        '  Line 2 → print "Ready to ship code!"',
+      answer: 'print("I am ready!")\nprint("Ready to ship code!")',
       hint:
-        'Two separate print() lines:\n\nprint("I am ready!")\nprint("Let\'s fight!")\n\nEach message in its own print() call.',
+        'Two separate print() lines:\n\nprint("I am ready!")\nprint("Ready to ship code!")\n\nEach message in its own print() call.',
       indentNote: null,
-      successMsg: "Not bad, puny coder. But can you THINK like a programmer?!",
+      successMsg: "Solid opener. Now show decision-making under pressure.",
     },
     {
       id: "bowser-1",
       question:
-        'Challenge 2: One last spell!\n' +
+        'Challenge 2: One last check!\n' +
         'Write an if/else that checks if  hp  is greater than 0.\n' +
-        'If yes, print "Fight on!". If no, print "Defeated!".\n' +
+        'If yes, print "Ship it!". If no, print "Rejected.". \n' +
         '(Assume  hp = 3  is already set above.)',
-      answer: 'if hp > 0:\n    print("Fight on!")\nelse:\n    print("Defeated!")',
+      answer: 'if hp > 0:\n    print("Ship it!")\nelse:\n    print("Rejected.")',
       hint:
         'Pattern:\n\nif condition:\n    print("...")\nelse:\n    print("...")\n\nRules:\n• End if: and else: with a colon\n• 4 spaces of indent inside each block\n• else: lines up with if (no indent)',
       indentNote: '⚠ Indentation: use exactly 4 spaces before each print() inside the if/else blocks.',
-      successMsg: "IMPOSSIBLE! You really DO know Python! Fine… HAVE AT YOU!",
+      successMsg: "Impressive. Final round unlocked.",
     },
   ],
 };
+
+const WIN_MESSAGES = [
+  "Offer secured.",
+  "You got hired.",
+  "Welcome to the tech industry.",
+  "Salary unlocked.",
+  "Software Engineer Achieved.",
+];
+
+function randomFrom(list) {
+  return list[Math.floor(Math.random() * list.length)];
+}
 
 // ── Trigger check ─────────────────────────────────────────────────────────
 export function checkBowserTrigger() {
@@ -55,6 +67,11 @@ export function checkBowserTrigger() {
   if (state.bowserDialogDone || state.activeBowser) return;
   if (state.player.x >= BOWSER_TRIGGER_COL * TILE) {
     state.activeBowser = true;
+    // Switch to intense music
+    const bgMusic = document.getElementById("bg-music");
+    const intenseMusic = document.getElementById("intense-music");
+    if (bgMusic) bgMusic.pause();
+    if (intenseMusic) intenseMusic.play().catch(() => { });
   }
 }
 
@@ -103,16 +120,19 @@ export function updateBowser() {
       b.alive = false;
       state.bowserDefeated = true;
       state.gameWin = true;
+      state.toastMessage = randomFrom(WIN_MESSAGES);
+      state.toastUntil = Date.now() + 3200;
+      // Switch back to normal music
+      const bgMusic = document.getElementById("bg-music");
+      const intenseMusic = document.getElementById("intense-music");
+      if (intenseMusic) intenseMusic.pause();
+      if (bgMusic) bgMusic.play().catch(() => { });
       setTimeout(() => {
-        showScreen("intro-screen");
-        fullReset();
+        showVictoryScreen();
       }, 3500);
     }
   } else if (overlapX && py + ph > b.y + 2 && py < b.y + BOWSER_H) {
-    // Side hit — flash only, no death
-    if (b.hitTimer === 0 && state.player.invuln === 0) {
-      state.player.invuln = 90;
-    }
+    if (b.hitTimer === 0) applyPlayerDamage();
   }
 }
 
@@ -135,64 +155,50 @@ export function drawBowser(ctx) {
   ctx.fillStyle = "rgba(0,0,0,0.22)";
   ctx.fillRect(2, BOWSER_H - 3, BOWSER_W - 4, 4);
 
-  // Body — dark red shell
-  ctx.fillStyle = "#8b1a00";
+  // Body — suit jacket (dark blue)
+  ctx.fillStyle = "#1a1a4a";
   ctx.fillRect(4, 10, 24, 20);
-  // Body highlight
-  ctx.fillStyle = "#cc2200";
-  ctx.fillRect(5, 11, 22, 10);
+  // Shirt (white)
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(6, 12, 20, 8);
+  // Tie (red)
+  ctx.fillStyle = "#cc0000";
+  ctx.fillRect(14, 12, 4, 12);
 
-  // Shell spikes (3 small triangles on top)
-  ctx.fillStyle = "#e8a000";
-  for (let i = 0; i < 3; i++) {
-    const spx = 7 + i * 7;
-    ctx.beginPath();
-    ctx.moveTo(spx, 10);
-    ctx.lineTo(spx + 3, 4);
-    ctx.lineTo(spx + 6, 10);
-    ctx.closePath();
-    ctx.fill();
-  }
+  // Head — skin tone
+  ctx.fillStyle = "#f5deb3";
+  ctx.fillRect(8, 0, 16, 12);
+  // Hair (dark)
+  ctx.fillStyle = "#2a2a2a";
+  ctx.fillRect(8, 0, 16, 4);
 
-  // Head — greenish brown
-  ctx.fillStyle = "#7a5500";
-  ctx.fillRect(8, 0, 18, 14);
-  // Snout
-  ctx.fillStyle = "#9a6600";
-  ctx.fillRect(14, 6, 12, 8);
-  // Nostrils
-  ctx.fillStyle = "#3a1a00";
-  ctx.fillRect(15, 8, 2, 2);
-  ctx.fillRect(19, 8, 2, 2);
+  // Eyes — stern (black)
+  ctx.fillStyle = "#000000";
+  ctx.fillRect(10, 4, 3, 3);
+  ctx.fillRect(19, 4, 3, 3);
+  // Eyebrows (thick, angry)
+  ctx.fillStyle = "#2a2a2a";
+  ctx.fillRect(9, 2, 5, 2);
+  ctx.fillRect(18, 2, 5, 2);
 
-  // Eyes — angry (red pupils)
-  ctx.fillStyle = "#ff2200";
-  ctx.fillRect(9, 2, 5, 4);
-  ctx.fillRect(20, 2, 5, 4);
-  // Pupils
-  ctx.fillStyle = "#1a0000";
-  ctx.fillRect(10, 3, 3, 3);
-  ctx.fillRect(21, 3, 3, 3);
-  // Angry brows (slant inward)
-  ctx.fillStyle = "#1a0000";
-  ctx.fillRect(8, 1, 7, 2);
-  ctx.fillRect(19, 1, 7, 2);
+  // Mouth — frowning
+  ctx.fillStyle = "#000000";
+  ctx.fillRect(14, 8, 4, 2);
 
-  // Horns
-  ctx.fillStyle = "#e8c000";
-  ctx.fillRect(8, -4, 4, 6);
-  ctx.fillRect(20, -4, 4, 6);
+  // Arms (suit sleeves)
+  ctx.fillStyle = "#1a1a4a";
+  ctx.fillRect(0, 12, 6, 8);
+  ctx.fillRect(26, 12, 6, 8);
 
-  // Feet
-  ctx.fillStyle = "#5a3800";
-  ctx.fillRect(4, 28, 8, 4);
-  ctx.fillRect(20, 28, 8, 4);
-  // Claws
-  ctx.fillStyle = "#c8a000";
-  ctx.fillRect(4, 31, 2, 3);
-  ctx.fillRect(7, 31, 2, 3);
-  ctx.fillRect(20, 31, 2, 3);
-  ctx.fillRect(23, 31, 2, 3);
+  // Legs (pants)
+  ctx.fillStyle = "#000033";
+  ctx.fillRect(8, 28, 6, 4);
+  ctx.fillRect(18, 28, 6, 4);
+
+  // Shoes
+  ctx.fillStyle = "#333333";
+  ctx.fillRect(6, 30, 8, 2);
+  ctx.fillRect(18, 30, 8, 2);
 
   ctx.restore();
 
@@ -210,12 +216,12 @@ export function drawBowser(ctx) {
     ctx.restore();
   }
 
-  // ── "BOWSER" label ──────────────────────────────────────────────────
+  // ── Boss label ───────────────────────────────────────────────────────
   ctx.save();
   ctx.font = '500 5px "Press Start 2P", monospace';
   ctx.textAlign = "center";
   ctx.textBaseline = "bottom";
   ctx.fillStyle = "#ff4400";
-  ctx.fillText("BOWSER", sx + BOWSER_W / 2, sy - 14);
+  ctx.fillText("INTERVIEWER", sx + BOWSER_W / 2, sy - 14);
   ctx.restore();
 }

@@ -10,102 +10,106 @@ export const FLAG_COL = COLS - 12;
 export const SPAWN_X = 48;
 
 export const PLAYER = {
-  marioHat: "#e01828",
-  luigiHat: "#40c030",
-  overall: "#2040c8",
-  overallDark: "#102878",
+  marioHat: "#4da3ff",
+  luigiHat: "#7bd86a",
+  overall: "#4f6b8a",
+  overallDark: "#34485f",
   glove: "#f8f8f8",
   skin: "#f8b868",
-  hair: "#604018",
-  shoe: "#604018",
+  hair: "#2f2a28",
+  shoe: "#2f2a28",
+  backpack: "#3a2f6b",
+  backpackDark: "#251d45",
+  hoodie: "#6f8fb2",
+  hoodieDark: "#4b6888",
 };
 
 /** @type {{ label: string; skyTop: string; skyBot: string; hillNear: string; hillNearDark: string; hillFar: string; hillFarDark: string; bush: string; bushDark: string; cloud: string; cloudEdge: string; groundTop: string; groundFill: string; groundDark: string; grassStripe: string; brickHi: string; brickMid: string; brickLo: string; brickMortar: string; qFill: string; qEdge: string; qHi: string; blockMetal: string; blockMetalDark: string; pipe: string; pipeDark: string; pipeLight: string; pole: string; poleDark: string; poleLight: string; flag: string; flagStripe: string; pitColor: string; pitLine: string; hudBar: string; hudBorder: string; hudText: string; hudShadow: string; backdrop: "overworld" | "underground" | "athletic" }[]} */
 export const THEMES = [
   {
-    label: "1-1",
-    skyTop: "#5c94fc",
-    skyBot: "#c8e8ff",
-    hillNear: "#00b000",
-    hillNearDark: "#006800",
-    hillFar: "#20d020",
-    hillFarDark: "#009010",
-    bush: "#00c020",
-    bushDark: "#007810",
-    cloud: "#f8fcff",
-    cloudEdge: "#b8d0f0",
-    groundTop: "#c86818",
-    groundFill: "#fc9838",
-    groundDark: "#884010",
-    grassStripe: "#208028",
-    brickHi: "#fc9838",
-    brickMid: "#d06008",
-    brickLo: "#883008",
-    brickMortar: "#401808",
-    qFill: "#f8c020",
-    qEdge: "#c08000",
-    qHi: "#fff070",
-    blockMetal: "#b8b8d8",
-    blockMetalDark: "#585868",
-    pipe: "#00c800",
-    pipeDark: "#007800",
-    pipeLight: "#b8f8a0",
-    pole: "#40a018",
-    poleDark: "#205008",
-    poleLight: "#68c838",
-    flag: "#f8f8f8",
-    flagStripe: "#e01828",
-    pitColor: "#181820",
-    pitLine: "#303040",
-    hudBar: "#201810",
-    hudBorder: "#f8d868",
-    hudText: "#fff8c8",
-    hudShadow: "#000000",
+    label: "Campus",
+    skyTop: "#87CEEB", // Sky blue
+    skyBot: "#E0F6FF", // Light sky blue
+    hillNear: "#708090", // Slate gray (buildings)
+    hillNearDark: "#2F4F4F", // Dark slate gray
+    hillFar: "#A9A9A9", // Dark gray (distant buildings)
+    hillFarDark: "#696969", // Dim gray
+    bush: "#32CD32", // Lime green (trees/park areas)
+    bushDark: "#228B22", // Forest green
+    cloud: "#FFFFFF", // White clouds
+    cloudEdge: "#F0F8FF", // Alice blue
+    groundTop: "#696969", // Dim gray (concrete)
+    groundFill: "#D3D3D3", // Light gray (sidewalk)
+    groundDark: "#A9A9A9", // Dark gray
+    grassStripe: "#228B22", // Forest green (grass patches)
+    brickHi: "#CD853F", // Peru (building bricks)
+    brickMid: "#A0522D", // Sienna
+    brickLo: "#8B4513", // Saddle brown
+    brickMortar: "#696969", // Dim gray
+    qFill: "#FFD700", // Gold (question blocks)
+    qEdge: "#FFA500", // Orange
+    qHi: "#FFFF00", // Yellow
+    blockMetal: "#C0C0C0", // Silver (metal blocks)
+    blockMetalDark: "#808080", // Gray
+    pipe: "#228B22", // Forest green (park pipes)
+    pipeDark: "#006400", // Dark green
+    pipeLight: "#90EE90", // Light green
+    pole: "#8B4513", // Saddle brown (street lamps)
+    poleDark: "#654321", // Dark brown
+    poleLight: "#D2691E", // Chocolate
+    flag: "#FFFFFF", // White
+    flagStripe: "#DC143C", // Crimson (flag stripes)
+    pitColor: "#2F4F4F", // Dark slate gray
+    pitLine: "#FF6347", // Tomato
+    hudBar: "#2F4F4F", // Dark slate gray
+    hudBorder: "#FFD700", // Gold
+    hudText: "#FFFFFF", // White
+    hudShadow: "#000000", // Black
     backdrop: "overworld",
   },
   {
-    label: "1-2",
-    skyTop: "#080618",
-    skyBot: "#282040",
-    hillNear: "#504038",
-    hillNearDark: "#302820",
-    hillFar: "#383028",
-    hillFarDark: "#201810",
-    bush: "#685848",
-    bushDark: "#403028",
-    cloud: "#484058",
-    cloudEdge: "#302838",
-    groundTop: "#786058",
-    groundFill: "#a89078",
-    groundDark: "#483830",
-    grassStripe: "#506848",
-    brickHi: "#c8a878",
-    brickMid: "#886848",
-    brickLo: "#584028",
-    brickMortar: "#301810",
-    qFill: "#f0a818",
-    qEdge: "#a07010",
-    qHi: "#ffd850",
-    blockMetal: "#9090a0",
-    blockMetalDark: "#484858",
-    pipe: "#00a800",
-    pipeDark: "#005000",
-    pipeLight: "#78b060",
-    pole: "#509030",
-    poleDark: "#285018",
-    poleLight: "#70b848",
-    flag: "#f0f0f0",
-    flagStripe: "#e83030",
-    pitColor: "#040408",
-    pitLine: "#101018",
-    hudBar: "#100818",
-    hudBorder: "#b898f8",
-    hudText: "#e8d8ff",
-    hudShadow: "#000000",
+    label: "Interview Prep",
+    skyTop: "#E6F3FF", // Very light blue (office ceiling)
+    skyBot: "#B3D9FF", // Light blue
+    hillNear: "#F5F5F5", // White smoke (walls)
+    hillNearDark: "#D3D3D3", // Light gray
+    hillFar: "#E8E8E8", // Very light gray (distant walls)
+    hillFarDark: "#BEBEBE", // Gray
+    bush: "#4169E1", // Royal blue (office chairs/tables)
+    bushDark: "#0000CD", // Medium blue
+    cloud: "#F0F8FF", // Alice blue (office lights)
+    cloudEdge: "#E6E6FA", // Lavender
+    groundTop: "#F5F5DC", // Beige (carpet)
+    groundFill: "#FFFACD", // Lemon chiffon
+    groundDark: "#F0E68C", // Khaki
+    grassStripe: "#32CD32", // Lime green (plants)
+    brickHi: "#DDA0DD", // Plum (office partitions)
+    brickMid: "#BA55D3", // Medium orchid
+    brickLo: "#8A2BE2", // Blue violet
+    brickMortar: "#9370DB", // Medium purple
+    qFill: "#00CED1", // Dark turquoise (learning materials)
+    qEdge: "#20B2AA", // Light sea green
+    qHi: "#40E0D0", // Turquoise
+    blockMetal: "#C0C0C0", // Silver (computers)
+    blockMetalDark: "#A9A9A9", // Dark gray
+    pipe: "#FF6347", // Tomato (cables)
+    pipeDark: "#DC143C", // Crimson
+    pipeLight: "#FF7F50", // Coral
+    pole: "#8B4513", // Saddle brown (desks)
+    poleDark: "#654321", // Dark brown
+    poleLight: "#D2691E", // Chocolate
+    flag: "#FFFFFF", // White (paper)
+    flagStripe: "#000080", // Navy (text)
+    pitColor: "#2F4F4F", // Dark slate gray (shadows)
+    pitLine: "#FF4500", // Orange red
+    hudBar: "#191970", // Midnight blue
+    hudBorder: "#00BFFF", // Deep sky blue
+    hudText: "#E0FFFF", // Light cyan
+    hudShadow: "#000000", // Black
     backdrop: "underground",
   },
   {
-    label: "1-3",
+    label: "Company HQ",
     skyTop: "#4070c8",
     skyBot: "#98d0f8",
     hillNear: "#689028",
@@ -137,8 +141,8 @@ export const THEMES = [
     poleLight: "#68c040",
     flag: "#ffffff",
     flagStripe: "#f01828",
-    pitColor: "#181008",
-    pitLine: "#302018",
+    pitColor: "#4c1212",
+    pitLine: "#ff7f50",
     hudBar: "#281808",
     hudBorder: "#f8a848",
     hudText: "#ffe8c0",

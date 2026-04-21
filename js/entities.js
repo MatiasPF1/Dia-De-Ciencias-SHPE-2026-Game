@@ -1,6 +1,6 @@
 import { GROUND_ROW, TILE, COLS, ROWS, VIEW_W } from "./constants.js";
 import { state } from "./state.js";
-import { isSolid } from "./level.js";
+import { isSolid, applyPlayerDamage } from "./level.js";
 
 export function updateCoinParticles() {
   for (const p of state.coinParticles) {
@@ -48,21 +48,21 @@ export function updateGoombas() {
 
     // horizontal movement + wall/pit reversal
     g.x += g.vx;
-    // reverse at solid tile ahead
+    // reverse at solid tile ahead or map edge
     const ahead = g.vx < 0 ? g.x - 1 : g.x + GW + 1;
     const midR = Math.floor((g.y + GH * 0.5) / TILE);
     const aheadC = Math.floor(ahead / TILE);
-    if (aheadC >= 0 && aheadC < COLS && midR >= 0 && midR < ROWS && isSolid(state.tiles[midR][aheadC])) {
+    if (aheadC < 0 || aheadC >= COLS || (aheadC >= 0 && aheadC < COLS && midR >= 0 && midR < ROWS && isSolid(state.tiles[midR][aheadC]))) {
       g.vx = -g.vx;
     }
-    // reverse at pit edge
+    // reverse at pit edge or map edge
     const footC = Math.floor((g.x + (g.vx < 0 ? 0 : GW)) / TILE);
     const belowR = Math.floor((g.y + GH + 1) / TILE);
-    if (belowR >= 0 && belowR < ROWS && footC >= 0 && footC < COLS && !isSolid(state.tiles[belowR][footC])) {
+    if (footC < 0 || footC >= COLS || (belowR >= 0 && belowR < ROWS && footC >= 0 && footC < COLS && !isSolid(state.tiles[belowR][footC]))) {
       g.vx = -g.vx;
     }
 
-    // stomp check: player falling onto goomba
+    // stomp check: player falling onto rejection enemy
     if (state.player.invuln === 0) {
       const px = state.player.x, py = state.player.y, pw = state.player.w, ph = state.player.h;
       const overlapX = px + pw > g.x + 2 && px < g.x + GW - 2;
@@ -74,10 +74,7 @@ export function updateGoombas() {
         state.player.vy = -5;
         state.score += 100;
       } else if (overlapX && py + ph > g.y + 2 && py < g.y + GH) {
-        // side hit — flash only, no death
-        if (state.player.invuln === 0) {
-          state.player.invuln = 90;
-        }
+        applyPlayerDamage();
       }
     }
   }
@@ -94,57 +91,50 @@ export function drawGoombas() {
     state.ctx.translate(sx, sy);
 
     if (g.squished) {
-      // flat squished body
-      state.ctx.fillStyle = "#5c3008";
-      state.ctx.fillRect(0, GH - 5, GW, 5);
-      state.ctx.fillStyle = "#8b4513";
-      state.ctx.fillRect(1, GH - 8, GW - 2, 4);
-      // eyes still visible
-      state.ctx.fillStyle = "#fff";
-      state.ctx.fillRect(2, GH - 7, 3, 2);
-      state.ctx.fillRect(GW - 5, GH - 7, 3, 2);
-      state.ctx.fillStyle = "#000";
-      state.ctx.fillRect(3, GH - 7, 2, 2);
-      state.ctx.fillRect(GW - 4, GH - 7, 2, 2);
+      // flattened rejection letter
+      state.ctx.fillStyle = "#cfd6df";
+      state.ctx.fillRect(1, GH - 8, GW - 2, 6);
+      state.ctx.fillStyle = "#ff4b5c";
+      state.ctx.fillRect(4, GH - 7, GW - 8, 1);
+      state.ctx.fillRect(4, GH - 5, GW - 8, 1);
       state.ctx.restore();
       continue;
     }
 
-    // feet (animate by world x)
+    // tiny shadow feet (animate by world x)
     const step = Math.floor(g.x / 6) % 2;
     state.ctx.fillStyle = "#3a1a00";
-    state.ctx.fillRect(1 + step,     GH - 5, 5, 5);
+    state.ctx.fillRect(1 + step, GH - 5, 5, 5);
     state.ctx.fillRect(GW - 6 - step, GH - 5, 5, 5);
 
-    // body
-    state.ctx.fillStyle = "#8b4513";
-    state.ctx.fillRect(2, GH - 13, GW - 4, 9);
-    // body highlight
-    state.ctx.fillStyle = "#c46020";
-    state.ctx.fillRect(3, GH - 12, GW - 6, 3);
+    // glitch-bug body
+    state.ctx.fillStyle = "#5f2ccf";
+    state.ctx.fillRect(2, 3, GW - 4, GH - 8);
+    state.ctx.fillStyle = "#7f4dff";
+    state.ctx.fillRect(3, 4, GW - 6, 4);
+    state.ctx.fillStyle = "#3a1f7f";
+    state.ctx.fillRect(4, 10, GW - 8, 2);
 
-    // head (round-ish)
-    state.ctx.fillStyle = "#8b4513";
-    state.ctx.fillRect(1, 1, GW - 2, GH - 13);
-    state.ctx.fillRect(0, 3, GW, GH - 16);
-    // head top dark
-    state.ctx.fillStyle = "#5c2e08";
-    state.ctx.fillRect(2, 0, GW - 4, 3);
-    state.ctx.fillRect(0, 2, 2, 2);
-    state.ctx.fillRect(GW - 2, 2, 2, 2);
+    // pixel antennae
+    state.ctx.fillStyle = "#a88cff";
+    state.ctx.fillRect(4, 1, 2, 3);
+    state.ctx.fillRect(GW - 6, 1, 2, 3);
+    state.ctx.fillStyle = "#ff5a7a";
+    state.ctx.fillRect(4, 0, 2, 1);
+    state.ctx.fillRect(GW - 6, 0, 2, 1);
 
-    // eyes white
-    state.ctx.fillStyle = "#fff";
-    state.ctx.fillRect(2, 4, 4, 4);
-    state.ctx.fillRect(GW - 6, 4, 4, 4);
-    // pupils (angry, pointing inward)
-    state.ctx.fillStyle = "#000";
-    state.ctx.fillRect(4, 5, 2, 3);
-    state.ctx.fillRect(GW - 6, 5, 2, 3);
-    // eyebrow (angry)
-    state.ctx.fillStyle = "#3a1a00";
-    state.ctx.fillRect(2, 3, 4, 1);
-    state.ctx.fillRect(GW - 6, 3, 4, 1);
+    // eyes + pupils
+    state.ctx.fillStyle = "#f2f6ff";
+    state.ctx.fillRect(4, 6, 3, 3);
+    state.ctx.fillRect(GW - 7, 6, 3, 3);
+    state.ctx.fillStyle = "#1a1233";
+    state.ctx.fillRect(5, 7, 1, 2);
+    state.ctx.fillRect(GW - 6, 7, 1, 2);
+
+    // little "error" glyph
+    state.ctx.fillStyle = "#ff5a7a";
+    state.ctx.fillRect(7, 11, 2, 1);
+    state.ctx.fillRect(9, 10, 1, 3);
 
     state.ctx.restore();
   }
